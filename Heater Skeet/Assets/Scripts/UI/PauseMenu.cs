@@ -39,8 +39,11 @@ public class PauseMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("STARTING>>");
         // Hide menu on start (transform.localScale to (0.0f, 0.0f, 0.0f))
         // Call startOpening()
+        transform.localScale=new Vector3(0.0f, 0.0f, 0.0f);
+        startOpening();
 
         // Instantiate and enable controls object
         controls = new MainInputActions();
@@ -58,12 +61,21 @@ public class PauseMenu : MonoBehaviour
 
     private void moveCursor(Vector2 direction) {
         // If pauseMenuState isn't Idle, bail
-
-        if (direction.y > 0.0f) {
-            // startTransition(true)
-        } else if (direction.y < 0.0f) {
-            // startTransition(false)
+        if (pauseMenuState!=PauseMenuState.Idle)
+        {
+            Debug.Log("Not inactive");
+            return;
         }
+        //Go up
+        if (direction.y > 0.0f) {
+            Debug.Log("AYE DID IT! UP");
+            startTransition(true);
+        //Go down
+        } else if (direction.y < 0.0f) {
+            Debug.Log("downs");
+            startTransition(false);
+        }
+        
     }
 
     private void cancelSelection() {
@@ -76,39 +88,87 @@ public class PauseMenu : MonoBehaviour
 
     private void startOpening() {
         // Set transitionCounter to zero
+        transitionCounter=0;
         // Set pauseMenuState to Opening
+        pauseMenuState=PauseMenuState.Opening;
     }
 
     private void startTransition(bool transitionUp) {
         // Bail if can't transition, like trying to transition up when at index 0
-
+        //*** PLACE HOLDER for max
+        if (currentSelection < 0 || currentSelection>5)
+        {
+            Debug.Log("OUT OF BOUNDS");
+            return;
+        }
         // Set lastSelection to currentSelection
+        lastSelection=currentSelection;
         // Increment/decrement currentSelection based on parameter bool
-
+        if(transitionUp==true)
+        {
+            currentSelection++;
+        }
+        else if(transitionUp==false)
+        {
+            currentSelection--;
+        }
         // Set cursorStartPosition to cursorTransform.localPosition
         // Set cursorNextPosition to selectionTransforms[currentSelection].localPosition + CURSOR_OFFSET
+        cursorStartPosition=cursorTransform.localPosition;
+        cursorEndPosition=selectionTransforms[currentSelection].localPosition + CURSOR_OFFSET;
 
         // Set transitionCounter to zero
+        transitionCounter=0;
         // Set pauseMenuState to Transitioning
+        pauseMenuState=PauseMenuState.Transitioning;
 
     }
 
+/**
+IEnumerator LerpPosition(Vector3 targetPosition, float duration)
+    {
+        float time = 0;
+        Vector3 startPosition = transform.position;
+        while (time < duration)
+        {
+            transform.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = targetPosition;
+    }
+**/
+
     // Update is called once per frame
     void Update() {
+        int frameCounter=0;
         if (pauseMenuState == PauseMenuState.Opening) {
             // Tween transform.localScale from (0.0f, 0.0f, 0.0f) to MENU_SCALE
-            
+            while (frameCounter < INTRO_DURATION)
+            {
+                transform.localScale=Vector3.Lerp(new Vector3(0.0f, 0.0f, 0.0f), MENU_SCALE, frameCounter/INTRO_DURATION);
+                frameCounter++;
+            }
+            cursorTransform.localPosition=cursorEndPosition;
             // When done, set state to PauseMenuState.Idle
+            pauseMenuState= PauseMenuState.Idle;
+            return;
+
         } else if (pauseMenuState == PauseMenuState.Idle) {
             // Nothing to do here. Transitioning is accomplished via callbacks
             // (Transition functions are automatically called when player moves joystick,
             // just bail if they try to transition and menu state isn't Idle)
+            if (pauseMenuState!=PauseMenuState.Idle){
+                return;
+            }
         } else if (pauseMenuState == PauseMenuState.Transitioning) {
             // Tween cursorTransform.localPosition from cursorStartPosition to cursorEndPosition
             // Tween selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color from ACTIVE_COLOR to INACTIVE_COLOR
             // Tween selectionTransforms[currentSelection].GetChild(0).GetComponent<Image>().color from INACTIVE_COLOR to ACTIVE_COLOR
 
             // When done, set state to PauseMenuState.Idle
+            pauseMenuState=PauseMenuState.Idle;
+            return;
         } else if (pauseMenuState == PauseMenuState.Closing) {
             // Opposite of Opening, but save for later
         }
