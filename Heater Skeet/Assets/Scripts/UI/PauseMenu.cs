@@ -96,9 +96,14 @@ public class PauseMenu : MonoBehaviour
     private void startTransition(bool transitionUp) {
         // Bail if can't transition, like trying to transition up when at index 0
         //*** PLACE HOLDER for max
-        if (currentSelection < 0 || currentSelection>5)
+        if (currentSelection==0 && transitionUp==true)
         {
-            Debug.Log("OUT OF BOUNDS");
+            Debug.Log(currentSelection + " Can't go down");
+            return;
+        }
+        if (currentSelection== 4 && transitionUp==false)
+        {
+            Debug.Log(currentSelection + " Can't go up");
             return;
         }
         // Set lastSelection to currentSelection
@@ -106,11 +111,13 @@ public class PauseMenu : MonoBehaviour
         // Increment/decrement currentSelection based on parameter bool
         if(transitionUp==true)
         {
-            currentSelection++;
+            Debug.Log(currentSelection);
+            currentSelection--;
         }
         else if(transitionUp==false)
         {
-            currentSelection--;
+            Debug.Log(currentSelection);
+            currentSelection++;
         }
         // Set cursorStartPosition to cursorTransform.localPosition
         // Set cursorNextPosition to selectionTransforms[currentSelection].localPosition + CURSOR_OFFSET
@@ -149,7 +156,6 @@ IEnumerator LerpPosition(Vector3 targetPosition, float duration)
                 transform.localScale=Vector3.Lerp(new Vector3(0.0f, 0.0f, 0.0f), MENU_SCALE, frameCounter/INTRO_DURATION);
                 frameCounter++;
             }
-            cursorTransform.localPosition=cursorEndPosition;
             // When done, set state to PauseMenuState.Idle
             pauseMenuState= PauseMenuState.Idle;
             return;
@@ -165,6 +171,14 @@ IEnumerator LerpPosition(Vector3 targetPosition, float duration)
             // Tween cursorTransform.localPosition from cursorStartPosition to cursorEndPosition
             // Tween selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color from ACTIVE_COLOR to INACTIVE_COLOR
             // Tween selectionTransforms[currentSelection].GetChild(0).GetComponent<Image>().color from INACTIVE_COLOR to ACTIVE_COLOR
+            while(transitionCounter<TRANSITION_DURATION){
+                cursorTransform.localPosition=Vector3.Lerp(cursorStartPosition, cursorEndPosition, transitionCounter/TRANSITION_DURATION);
+                selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+                selectionTransforms[currentSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+                transitionCounter++;
+
+            }
+            
 
             // When done, set state to PauseMenuState.Idle
             pauseMenuState=PauseMenuState.Idle;
@@ -174,3 +188,11 @@ IEnumerator LerpPosition(Vector3 targetPosition, float duration)
         }
     }
 }
+
+/**while (frameCounter < INTRO_DURATION)
+            {
+                transform.localScale=Vector3.Lerp(new Vector3(0.0f, 0.0f, 0.0f), MENU_SCALE, frameCounter/INTRO_DURATION);
+                frameCounter++;
+            }
+            **/
+            
