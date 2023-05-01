@@ -8670,7 +8670,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1606879558
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10347,6 +10347,7 @@ GameObject:
   - component: {fileID: 1963550080}
   - component: {fileID: 1963550082}
   - component: {fileID: 1963550081}
+  - component: {fileID: 1963550083}
   m_Layer: 5
   m_Name: SettingsMenu
   m_TagString: Untagged
@@ -10415,6 +10416,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1963550079}
   m_CullTransparentMesh: 1
+--- !u!114 &1963550083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963550079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f36c76cd2bfd19f40a4e257b49a6f8f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionTransforms:
+  - {fileID: 600326482}
+  - {fileID: 1153646430}
+  - {fileID: 597457043}
+  - {fileID: 15424813}
+  - {fileID: 1781168299}
+  - {fileID: 323836190}
+  - {fileID: 1768778110}
+  cursorTransform: {fileID: 1706103057}
 --- !u!1 &1976515337
 GameObject:
   m_ObjectHideFlags: 0

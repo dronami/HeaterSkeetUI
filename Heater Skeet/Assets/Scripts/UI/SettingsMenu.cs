@@ -12,6 +12,13 @@ public class SettingsMenu: MonoBehaviour
         Transitioning,
         Closing
     }
+    
+    private enum Directions {
+        Up,
+        Down,
+        Left,
+        Right
+    }
 
     private PauseMenuState pauseMenuState = PauseMenuState.Inactive;
 
@@ -37,10 +44,23 @@ public class SettingsMenu: MonoBehaviour
 
     private MainInputActions controls;
 
+    //vars unique to settingsMenu
+    //(Order: Up, Down, Left, Right)
+    //-1 if no adj node, or INDEX of adj node
+
+    //0=SFX
+    //1=Muzak
+    //2=Flava
+    //3=Pottymouf
+    //4=Lengua NEEDS WORK
+    //5=OK
+    //6=CANCEL
+    private readonly int[,] adjList=new int[,] {{-1,1,-1,-1}, {0,2,-1,-1}, {1,3,-1,-1}, {2,4,-1,-1}, {3,5,-1,-1}, {4,-1,-1,6}, {4,-1,5,-1}};
+
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("STARTING>>");
+        Debug.Log("STARTING SETTINGS");
         // Hide menu on start (transform.localScale to (0.0f, 0.0f, 0.0f))
         // Call startOpening()
         transform.localScale=new Vector3(0.0f, 0.0f, 0.0f);
@@ -69,12 +89,20 @@ public class SettingsMenu: MonoBehaviour
         }
         //Go up
         if (direction.y > 0.0f) {
-            Debug.Log("AYE DID IT! UP");
-            startTransition(true);
+            Debug.Log("UP");
+            startTransition(Directions.Up);
         //Go down
         } else if (direction.y < 0.0f) {
-            Debug.Log("downs");
-            startTransition(false);
+            Debug.Log("DOWN");
+            startTransition(Directions.Down);
+        }
+        else if (direction.x<0.0f){
+            Debug.Log("LEFT");
+            startTransition(Directions.Left);
+        }
+        else if (direction.x>0.0f){
+            Debug.Log("RIGHT");
+            startTransition(Directions.Right);
         }
         
     }
@@ -94,15 +122,17 @@ public class SettingsMenu: MonoBehaviour
         pauseMenuState=PauseMenuState.Opening;
     }
 
-    private void startTransition(bool transitionUp) {
+/**
+    private void startTransition(Directions move) {
         // Bail if can't transition, like trying to transition up when at index 0
         //*** PLACE HOLDER for max
-        if (currentSelection==0 && transitionUp==true)
+        
+        if (currentSelection==0 && move==Directions.Up)
         {
             Debug.Log(currentSelection + " Can't go down");
             return;
         }
-        if (currentSelection== 4 && transitionUp==false)
+        if (currentSelection== 5 && move==Directions.Down)
         {
             Debug.Log(currentSelection + " Can't go up");
             return;
@@ -110,6 +140,7 @@ public class SettingsMenu: MonoBehaviour
         // Set lastSelection to currentSelection
         lastSelection=currentSelection;
         // Increment/decrement currentSelection based on parameter bool
+        
         if(transitionUp==true)
         {
             Debug.Log(currentSelection);
@@ -120,6 +151,37 @@ public class SettingsMenu: MonoBehaviour
             Debug.Log(currentSelection);
             currentSelection++;
         }
+        // Set cursorStartPosition to cursorTransform.localPosition
+        // Set cursorNextPosition to selectionTransforms[currentSelection].localPosition + CURSOR_OFFSET
+        cursorStartPosition=cursorTransform.localPosition;
+        cursorEndPosition=selectionTransforms[currentSelection].localPosition + CURSOR_OFFSET;
+
+        // Set transitionCounter to zero
+        transitionCounter=0;
+        // Set pauseMenuState to Transitioning
+        pauseMenuState=PauseMenuState.Transitioning;
+
+    }
+     **/
+
+     private void startTransition(Directions move) {
+        // Bail if can't transition, like trying to transition up when at index 0
+        
+        Debug.Log("Currently at Node " + currentSelection);
+        Debug.Log("value= " + adjList[currentSelection, (int) move]);
+
+        if(adjList[currentSelection, (int) move] == -1){
+            Debug.Log("Cant move" + move);
+            return;
+        }
+
+        // Set lastSelection to currentSelection
+        lastSelection=currentSelection;
+        // Increment/decrement currentSelection based on parameter bool
+        
+        
+        currentSelection=adjList[currentSelection, (int) move];
+
         // Set cursorStartPosition to cursorTransform.localPosition
         // Set cursorNextPosition to selectionTransforms[currentSelection].localPosition + CURSOR_OFFSET
         cursorStartPosition=cursorTransform.localPosition;
@@ -163,8 +225,8 @@ public class SettingsMenu: MonoBehaviour
             }
             transitionCounter++;
             cursorTransform.localPosition=Vector3.Lerp(cursorStartPosition, cursorEndPosition, transitionCounter/TRANSITION_DURATION);
-            selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
-            selectionTransforms[currentSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            //selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            //selectionTransforms[currentSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
         
         } else if (pauseMenuState == PauseMenuState.Closing) {
             // Opposite of Opening, but save for later
