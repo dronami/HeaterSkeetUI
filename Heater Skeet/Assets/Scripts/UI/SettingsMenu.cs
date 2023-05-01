@@ -33,7 +33,18 @@ public class SettingsMenu: MonoBehaviour
 
     private Vector3 cursorStartPosition;
     private Vector3 cursorEndPosition;
-    private readonly Vector3 CURSOR_OFFSET = new Vector3(231.0f, -20.0f, 0.0f);
+    //private readonly Vector3 CURSOR_OFFSET = new Vector3(231.0f, -20.0f, 0.0f);
+    private readonly Vector3[] cursorPos = new [] {
+    new Vector3(280.0f, 135.0f, 0.0f),
+    new Vector3(280.0f, 75.0f, 0.0f),
+    new Vector3(280.0f, 15.0f, 0.0f),
+    new Vector3(280.0f, -60.0f, 0.0f),
+    new Vector3(280.0f, -115.0f, 0.0f),
+    new Vector3(60.0f, -300.0f, 0.0f),
+    new Vector3(280.0f, -300.0f, 0.0f),
+
+    };
+    //cursorOffset[0] = new Vector3 (231.0f, -20.0f, 0.0f);
 
     private int currentSelection = 0;
     private int lastSelection = -1;
@@ -60,6 +71,8 @@ public class SettingsMenu: MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //setup cursor offsets. Must be done in function bc it is private
+        
         Debug.Log("STARTING SETTINGS");
         // Hide menu on start (transform.localScale to (0.0f, 0.0f, 0.0f))
         // Call startOpening()
@@ -122,48 +135,6 @@ public class SettingsMenu: MonoBehaviour
         pauseMenuState=PauseMenuState.Opening;
     }
 
-/**
-    private void startTransition(Directions move) {
-        // Bail if can't transition, like trying to transition up when at index 0
-        //*** PLACE HOLDER for max
-        
-        if (currentSelection==0 && move==Directions.Up)
-        {
-            Debug.Log(currentSelection + " Can't go down");
-            return;
-        }
-        if (currentSelection== 5 && move==Directions.Down)
-        {
-            Debug.Log(currentSelection + " Can't go up");
-            return;
-        }
-        // Set lastSelection to currentSelection
-        lastSelection=currentSelection;
-        // Increment/decrement currentSelection based on parameter bool
-        
-        if(transitionUp==true)
-        {
-            Debug.Log(currentSelection);
-            currentSelection--;
-        }
-        else if(transitionUp==false)
-        {
-            Debug.Log(currentSelection);
-            currentSelection++;
-        }
-        // Set cursorStartPosition to cursorTransform.localPosition
-        // Set cursorNextPosition to selectionTransforms[currentSelection].localPosition + CURSOR_OFFSET
-        cursorStartPosition=cursorTransform.localPosition;
-        cursorEndPosition=selectionTransforms[currentSelection].localPosition + CURSOR_OFFSET;
-
-        // Set transitionCounter to zero
-        transitionCounter=0;
-        // Set pauseMenuState to Transitioning
-        pauseMenuState=PauseMenuState.Transitioning;
-
-    }
-     **/
-
      private void startTransition(Directions move) {
         // Bail if can't transition, like trying to transition up when at index 0
         
@@ -177,16 +148,14 @@ public class SettingsMenu: MonoBehaviour
 
         // Set lastSelection to currentSelection
         lastSelection=currentSelection;
-        // Increment/decrement currentSelection based on parameter bool
-        
-        
+                
         currentSelection=adjList[currentSelection, (int) move];
 
         // Set cursorStartPosition to cursorTransform.localPosition
         // Set cursorNextPosition to selectionTransforms[currentSelection].localPosition + CURSOR_OFFSET
         cursorStartPosition=cursorTransform.localPosition;
-        cursorEndPosition=selectionTransforms[currentSelection].localPosition + CURSOR_OFFSET;
-
+        //cursorEndPosition=selectionTransforms[currentSelection].localPosition + cursorOffset[0];
+        cursorEndPosition=cursorPos[currentSelection];
         // Set transitionCounter to zero
         transitionCounter=0;
         // Set pauseMenuState to Transitioning
@@ -233,11 +202,3 @@ public class SettingsMenu: MonoBehaviour
         }
     }
 }
-
-/**while (frameCounter < INTRO_DURATION)
-            {
-                transform.localScale=Vector3.Lerp(new Vector3(0.0f, 0.0f, 0.0f), MENU_SCALE, frameCounter/INTRO_DURATION);
-                frameCounter++;
-            }
-            **/
-            
