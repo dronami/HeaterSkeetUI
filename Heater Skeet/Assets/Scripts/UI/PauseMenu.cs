@@ -40,7 +40,7 @@ public class PauseMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("STARTING>>");
+        Debug.Log("STARTING>>!!!");
         // Hide menu on start (transform.localScale to (0.0f, 0.0f, 0.0f))
         // Call startOpening()
         transform.localScale=new Vector3(0.0f, 0.0f, 0.0f);

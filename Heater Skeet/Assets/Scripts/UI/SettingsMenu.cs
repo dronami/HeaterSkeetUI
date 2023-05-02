@@ -73,7 +73,7 @@ public class SettingsMenu: MonoBehaviour
     {
         //setup cursor offsets. Must be done in function bc it is private
         
-        Debug.Log("STARTING SETTINGS");
+        Debug.Log("STARTING SETTINGS!!!!!!!!");
         // Hide menu on start (transform.localScale to (0.0f, 0.0f, 0.0f))
         // Call startOpening()
         transform.localScale=new Vector3(0.0f, 0.0f, 0.0f);
@@ -194,8 +194,40 @@ public class SettingsMenu: MonoBehaviour
             }
             transitionCounter++;
             cursorTransform.localPosition=Vector3.Lerp(cursorStartPosition, cursorEndPosition, transitionCounter/TRANSITION_DURATION);
-            //selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
-            //selectionTransforms[currentSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+
+            if (currentSelection==0 || currentSelection==1) {
+            selectionTransforms[lastSelection].GetChild(0).GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            selectionTransforms[currentSelection].GetChild(0).GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            }
+            else if (currentSelection==2 && lastSelection==1) {
+            selectionTransforms[lastSelection].GetChild(0).GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            selectionTransforms[currentSelection].GetChild(0).GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            }
+            else if(currentSelection==3 && lastSelection==2){
+                selectionTransforms[lastSelection].GetChild(0).GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+                selectionTransforms[currentSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            }
+            else if(currentSelection==2 && lastSelection==3){
+                selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+                selectionTransforms[currentSelection].GetChild(0).GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            }
+            else if(currentSelection==3 && lastSelection==4){
+                //selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+                selectionTransforms[currentSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            }
+            else if (currentSelection==4 && lastSelection==3){
+                selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            }
+            else if (currentSelection==5 && lastSelection==4){
+                selectionTransforms[currentSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            }
+            else if (currentSelection==4 && (lastSelection==6 || lastSelection==5)){
+                selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            }
+            else{
+            selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            selectionTransforms[currentSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            }
         
         } else if (pauseMenuState == PauseMenuState.Closing) {
             // Opposite of Opening, but save for later
