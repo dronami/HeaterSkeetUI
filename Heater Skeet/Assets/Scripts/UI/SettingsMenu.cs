@@ -39,7 +39,26 @@ public class SettingsMenu: MonoBehaviour
     new Vector3(280.0f, 75.0f, 0.0f),
     new Vector3(280.0f, 15.0f, 0.0f),
     new Vector3(280.0f, -60.0f, 0.0f),
-    new Vector3(280.0f, -115.0f, 0.0f),
+    //
+
+    new Vector3(-65.0f, -160.0f, 0.0f),
+    new Vector3(-4.0f, -160.0f, 0.0f),
+    
+    new Vector3(60.0f, -160.0f, 0.0f),
+    new Vector3(115.0f, -160.0f, 0.0f),
+
+    new Vector3(185.0f, -160.0f, 0.0f),
+    new Vector3(245.0f, -160.0f, 0.0f),
+    //
+    new Vector3(-65.0f, -220.0f, 0.0f),
+    new Vector3(-4.0f, -220.0f, 0.0f),
+
+    new Vector3(60.0f, -220.0f, 0.0f),
+    new Vector3(115.0f, -220.0f, 0.0f),
+
+    new Vector3(185.0f, -220.0f, 0.0f),
+    new Vector3(245.0f, -220.0f, 0.0f),
+    // 
     new Vector3(60.0f, -300.0f, 0.0f),
     new Vector3(280.0f, -300.0f, 0.0f),
 
@@ -66,7 +85,13 @@ public class SettingsMenu: MonoBehaviour
     //4=Lengua NEEDS WORK
     //5=OK
     //6=CANCEL
-    private readonly int[,] adjList=new int[,] {{-1,1,-1,-1}, {0,2,-1,-1}, {1,3,-1,-1}, {2,4,-1,-1}, {3,5,-1,-1}, {4,-1,-1,6}, {4,-1,5,-1}};
+    //private readonly int[,] adjList=new int[,] {{-1,1,-1,-1}, {0,2,-1,-1}, {1,3,-1,-1}, {2,4,-1,-1}, {3,5,-1,-1}, {4,-1,-1,6}, {4,-1,5,-1}};
+    //private readonly int[,] adjList=new int[,] {{-1,1,-1,-1}, {0,2,-1,-1}, {1,3,-1,-1}, {2,4,-1,-1}, {3,5,-1,-1}, {4,-1,-1,6}, {4,-1,5,-1}};
+    private string lang;
+    private readonly int[,] adjList=new int[,] {{-1,1,-1,-1}, {0,2,-1,-1}, {1,3,-1,-1}, {2,4,-1,-1}, 
+    {3, 10, -1, 5}, {3, 11, 4, 6}, {3, 12, 5, 7},{3, 13, 6, 8},{3,14,7,9},{3,15,8,-1},{4,16, -1, 11},{5,16,10,12},{6,16,11,13},{7,17,12,14},{8,17,13,15},{9,17,14,-1},
+    {10,-1,-1,17},{14,-1,16,-1}};
+    
 
     // Start is called before the first frame update
     void Start()
@@ -211,6 +236,15 @@ public class SettingsMenu: MonoBehaviour
                 selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
                 selectionTransforms[currentSelection].GetChild(0).GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
             }
+            else if(currentSelection==4 && lastSelection==3){
+                selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+                selectionTransforms[4].GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            }
+            else if(currentSelection==5){
+                selectionTransforms[4].GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+                selectionTransforms[4].GetChild(0).GetChild(1).GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            }
+            /**
             else if(currentSelection==3 && lastSelection==4){
                 //selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
                 selectionTransforms[currentSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
@@ -224,10 +258,20 @@ public class SettingsMenu: MonoBehaviour
             else if (currentSelection==4 && (lastSelection==6 || lastSelection==5)){
                 selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
             }
+            //
+            else if(){
+
+            }
+            
+            else if (currentSelection==4 && (lastSelection==6 || lastSelection==5)){
+                selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
+            }
+            //
             else{
             selectionTransforms[lastSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(ACTIVE_COLOR, INACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
             selectionTransforms[currentSelection].GetChild(0).GetComponent<Image>().color=Color.Lerp(INACTIVE_COLOR, ACTIVE_COLOR, transitionCounter/TRANSITION_DURATION);
             }
+            **/
         
         } else if (pauseMenuState == PauseMenuState.Closing) {
             // Opposite of Opening, but save for later
